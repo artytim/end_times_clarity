@@ -1,0 +1,565 @@
+﻿<!doctype html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="在末世中清明地觀照——一份供時時自省的指引。作者：忘齋。" />
+  <title>在末世中清明地觀照</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700;900&family=Noto+Sans+TC:wght@300;400;500;700&family=EB+Garamond:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Variables ── */
+    :root {
+      --ink:        #1a1209;
+      --ink-light:  #3d2e1a;
+      --muted:      #7a6a55;
+      --rule:       #d8cfc0;
+      --highlight:  #9b2c2c;
+      --accent:     #8b5e14;
+      --bg:         #faf8f3;
+      --card-bg:    #f3efea;
+      --serif:      "Noto Serif TC", "EB Garamond", Georgia, serif;
+      --sans:       "Noto Sans TC", "Helvetica Neue", sans-serif;
+      --body-size:  1.1rem;
+      --line:       2;
+      --max-w:      800px;
+    }
+    [data-theme="dark"] {
+      --ink:        #e0d8cc;
+      --ink-light:  #c8c0b0;
+      --muted:      #8a8070;
+      --rule:       #3a3025;
+      --highlight:  #d05040;
+      --accent:     #c0902a;
+      --bg:         #140f08;
+      --card-bg:    #1e180e;
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--serif);
+      font-size: var(--body-size);
+      line-height: var(--line);
+      color: var(--ink);
+      background: var(--bg);
+      transition: background .35s, color .35s;
+    }
+
+    /* ── Progress bar ── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--highlight), var(--accent));
+      z-index: 200;
+      transition: width .1s linear;
+    }
+
+    /* ── Sticky header ── */
+    .sticky-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: .6rem 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--rule);
+      box-shadow: 0 2px 12px rgba(0,0,0,.08);
+      transform: translateY(-110%);
+      transition: transform .4s cubic-bezier(.4,0,.2,1), background .35s, border-color .35s;
+    }
+    .sticky-header.visible { transform: translateY(0); }
+    .sticky-header__title {
+      font-family: var(--serif);
+      font-size: .95rem;
+      font-weight: 500;
+      color: var(--ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 50%;
+    }
+    .sticky-header__right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-shrink: 0;
+    }
+    .sticky-header__badge {
+      font-family: var(--sans);
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+
+    /* ── Theme toggle (pill) ── */
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      padding: .3rem .8rem;
+      border: 1.5px solid var(--rule);
+      border-radius: 99px;
+      background: transparent;
+      font-family: var(--sans);
+      font-size: .8rem;
+      color: var(--ink);
+      cursor: pointer;
+      transition: background .25s, border-color .25s;
+      white-space: nowrap;
+    }
+    .theme-toggle:hover { background: var(--card-bg); border-color: var(--muted); }
+
+    /* ── Hero ── */
+    .hero {
+      width: 100%;
+      padding: 5.5rem 2rem 4rem;
+      background:
+        radial-gradient(ellipse at 30% 70%, rgba(120,40,0,.6) 0%, transparent 55%),
+        radial-gradient(ellipse at 75% 25%, rgba(80,20,0,.5) 0%, transparent 50%),
+        linear-gradient(160deg, #0f0a00 0%, #1a0d05 45%, #100800 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(200,100,0,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,100,0,.04) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    }
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+    .hero__eyebrow {
+      display: block;
+      font-family: var(--sans);
+      font-size: .8rem;
+      font-weight: 500;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(220,160,80,.75);
+      margin-bottom: 1.2rem;
+    }
+    .hero__title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 900;
+      line-height: 1.2;
+      color: #f0e8d8;
+      margin-bottom: 1.5rem;
+      letter-spacing: .06em;
+    }
+    .hero__meta {
+      font-family: var(--sans);
+      font-size: .85rem;
+      color: rgba(220,200,170,.6);
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem .1rem;
+      align-items: center;
+    }
+    .hero__meta .sep { margin: 0 .5rem; color: rgba(220,200,170,.35); }
+
+    /* ── Article layout ── */
+    .article-wrap {
+      max-width: calc(var(--max-w) + 280px);
+      margin: 0 auto;
+      padding: 3.5rem 2rem 5rem;
+      display: flex;
+      gap: 3rem;
+      align-items: flex-start;
+    }
+
+    /* ── TOC ── */
+    .toc-wrapper {
+      flex: 0 0 220px;
+      position: sticky;
+      top: 5rem;
+      max-height: calc(100vh - 7rem);
+      overflow-y: auto;
+      padding: 1.2rem 1.4rem;
+      background: var(--card-bg);
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+    }
+    .toc-wrapper > h2 {
+      font-family: var(--sans);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: .9rem;
+      border: none !important;
+      padding: 0 !important;
+    }
+    .toc-wrapper > h2::before { display: none !important; }
+    .toc-list { list-style: none; padding: 0; }
+    .toc-list li { margin-bottom: .15rem; }
+    .toc-list a {
+      font-family: var(--sans);
+      font-size: .8rem;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      gap: .5rem;
+      align-items: baseline;
+      line-height: 1.4;
+      padding: .18rem 0;
+      transition: color .2s;
+    }
+    .toc-list a:hover { color: var(--highlight); }
+    .toc-list .num {
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+      color: var(--highlight);
+      font-size: .72rem;
+    }
+    .toc-list li.sub a { padding-left: 1.1rem; font-size: .77rem; }
+
+    /* ── Article body ── */
+    .article-body { flex: 1 1 0; min-width: 0; }
+    .article-body h2 {
+      font-family: var(--serif);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 3rem 0 1.2rem;
+      padding-bottom: .6rem;
+      border-bottom: 2px solid var(--highlight);
+      scroll-margin-top: 4.5rem;
+      letter-spacing: .04em;
+    }
+    .article-body h2::before {
+      content: "§";
+      color: var(--highlight);
+      margin-right: .5rem;
+      font-weight: 400;
+    }
+    .article-body > h2:first-child { margin-top: 0; }
+    .article-body h3 {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--ink-light);
+      margin: 2.2rem 0 .9rem;
+      letter-spacing: .06em;
+      scroll-margin-top: 4.5rem;
+    }
+    .article-body p {
+      margin-bottom: 1.2em;
+      text-align: justify;
+      text-indent: 2em;
+      hyphens: auto;
+    }
+    .article-body strong { color: var(--highlight); font-weight: 600; }
+    .article-body em { font-style: normal; color: var(--accent); font-weight: 500; }
+    .article-body hr { border: none; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+    /* ── Callout (序言 belief list) ── */
+    .callout {
+      background: var(--card-bg);
+      border-left: 4px solid var(--highlight);
+      padding: 1.4rem 1.6rem;
+      border-radius: 0 4px 4px 0;
+      margin: 1.5rem 0 2rem;
+    }
+    .callout p { text-indent: 0; margin-bottom: .6rem; }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* ── Principle block ── */
+    .principle {
+      padding: .8rem 0 .8rem 1.4rem;
+      border-left: 3px solid var(--rule);
+      margin: 1.2rem 0 2rem;
+      scroll-margin-top: 4.5rem;
+    }
+    .principle h3 { margin-top: 0; }
+
+    /* ── Conclusion box ── */
+    .conclusion {
+      background: var(--ink);
+      color: var(--bg);
+      padding: 3rem 3.2rem;
+      border-radius: 4px;
+      margin: 3rem 0 0;
+      scroll-margin-top: 4.5rem;
+    }
+    .conclusion h2 {
+      color: var(--accent) !important;
+      border-bottom-color: var(--accent) !important;
+      font-size: 1.5rem;
+    }
+    [data-theme="dark"] .conclusion { background: #0a0703; }
+    .conclusion p { color: rgba(240,232,220,.82); text-indent: 0; }
+    .conclusion strong { color: #f0e8d8 !important; }
+    .final-call {
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      color: var(--accent) !important;
+      text-align: center;
+      margin-top: 1.8rem;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
+      background: #0c0800;
+      color: rgba(220,200,170,.55);
+      text-align: center;
+      padding: 2.8rem 2rem;
+      font-family: var(--sans);
+      font-size: .82rem;
+      line-height: 1.8;
+    }
+    [data-theme="dark"] .site-footer { background: #060402; }
+    .footer-rule {
+      width: 3rem;
+      height: 2px;
+      background: var(--highlight);
+      margin: 0 auto 1.2rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .article-wrap { flex-direction: column; gap: 2rem; }
+      .toc-wrapper { position: static; flex: none; width: 100%; max-height: none; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 4rem 1.2rem 3rem; }
+      .hero__title { font-size: 1.9rem; }
+      .article-wrap { padding: 2rem 1.2rem 4rem; }
+      .sticky-header { padding: .5rem 1rem; }
+      .sticky-header__badge { display: none; }
+      .conclusion { padding: 2rem 1.4rem; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      #progress-bar, .sticky-header, .toc-wrapper, .theme-toggle { display: none !important; }
+      .article-wrap { display: block; padding: 0; }
+      .conclusion { background: #f0f0f0 !important; color: #000 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress-bar"></div>
+
+  <header class="sticky-header" id="sticky-header">
+    <span class="sticky-header__title">在末世中清明地觀照</span>
+    <div class="sticky-header__right">
+      <span class="sticky-header__badge">忘齋 · 2026</span>
+      <button class="theme-toggle" id="theme-toggle" aria-label="切換深色/淺色模式">
+        <span id="theme-icon">☽</span><span id="theme-label">深色</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero__content">
+      <span class="hero__eyebrow">清明 · 末世 · 行動</span>
+      <h1 class="hero__title">在末世中清明地觀照</h1>
+      <div class="hero__meta">
+        <span>作者：忘齋</span><span class="sep">|</span><span>2026年</span>
+        <span class="sep">|</span><span>文明 · 清明 · 行動倫理</span>
+      </div>
+    </div>
+  </section>
+
+  <main class="article-wrap">
+    <nav class="toc-wrapper" aria-label="目錄">
+      <h2>目錄</h2>
+      <ol class="toc-list">
+        <li><a href="#s0"><span class="num">序.</span>序言</a></li>
+        <li><a href="#s1"><span class="num">一.</span>清明地觀照世界</a></li>
+        <li class="sub"><a href="#s1-1"><span class="num">1.1</span>真正在發生的事</a></li>
+        <li class="sub"><a href="#s1-2"><span class="num">1.2</span>真實的圖景</a></li>
+        <li class="sub"><a href="#s1-3"><span class="num">1.3</span>清明所需</a></li>
+        <li><a href="#s2"><span class="num">二.</span>拒斥美麗的謊言</a></li>
+        <li class="sub"><a href="#s2-1"><span class="num">2.1</span>主導秩序之謊</a></li>
+        <li class="sub"><a href="#s2-2"><span class="num">2.2</span>反抗者之謊</a></li>
+        <li class="sub"><a href="#s2-3"><span class="num">2.3</span>你對自己所說之謊</a></li>
+        <li><a href="#s3"><span class="num">三.</span>末世行走之道</a></li>
+        <li class="sub"><a href="#s3-1"><span class="num">3.1</span>先嵌入，後優化</a></li>
+        <li class="sub"><a href="#s3-2"><span class="num">3.2</span>以技能為禮，非為堡</a></li>
+        <li class="sub"><a href="#s3-3"><span class="num">3.3</span>刻意而漸次地減少依賴</a></li>
+        <li class="sub"><a href="#s3-4"><span class="num">3.4</span>涵養內在生命</a></li>
+        <li class="sub"><a href="#s3-5"><span class="num">3.5</span>參與建造替代方案</a></li>
+        <li class="sub"><a href="#s3-6"><span class="num">3.6</span>拒斥使其合法化的儀式</a></li>
+        <li class="sub"><a href="#s3-7"><span class="num">3.7</span>持守長遠之眼</a></li>
+        <li><a href="#s4"><span class="num">結.</span>結語</a></li>
+      </ol>
+    </nav>
+
+    <article class="article-body">
+
+      <h2 id="s0">序言</h2>
+      <p>此文乃一場長久叩問之沉澱。其旨不在慰藉、激勵或了結，而在<strong>守護清明</strong>——抵禦那以遠超個人辨偽之速、源源不絕地製造美麗謊言的文明壓力。請緩緩讀之，於眾聲喧嘩時重返其中，於證據要求時修訂其辭。</p>
+      <p>三項信念，言之簡而守之難：</p>
+      <div class="callout">
+        <p>一、<strong>清明地觀照世界。</strong></p>
+        <p>二、<strong>拒斥美麗的謊言——包括你自己的。</strong></p>
+        <p>三、<strong>學習並修習在末世中行走之道。</strong></p>
+      </div>
+
+      <h2 id="s1">卷一　清明地觀照世界</h2>
+
+      <h3 id="s1-1">真正在發生的事</h3>
+      <p>人類文明的某種特定形貌正在終結。並非「世界」的終結，亦非「人類」的終結，而是<strong>晚期現代、化石燃料驅動、資本組織、技術加速</strong>的那一形貌——大多數讀此文者所降生其中的那個形貌——正走向終局。其終結並非預測，而是當下實情，可於可量度的趨勢中觀察得見：</p>
+      <p>生物圈正處於相變之中。大氣化學被一代人以地質尺度的時間重新改寫。昆蟲生物量、表土、含水層、冰蓋、海洋化學，皆以前所未見之速朝同一方向移動。全新世——孕育一切人類文明的那段氣候穩定期——已然終結。取而代之者於人類歷史中無可比擬，唯地質紀錄堪為其鑑，而那些紀錄所載者，皆需以千年計方能復原。</p>
+      <p>經濟根基亦在變遷之中。資本主義於其末期，已剝盡一切前代文明用以抵禦無度索取的文化抗體。「貪婪」一物，三千年來於各大道德傳統中俱被斥為惡德，今竟被改包裝為進步之引擎。由此改裝所孕育的專業管理階層無從察覺崩塌，因其身份、收入、世界觀皆繫於那正在傾頹之系統的下游。</p>
+      <p>與此同時，新的圈地運動正在進行：技術封建主義——算力、模型、數據成為新的封邑，而絕大多數人類則淪為向少數平台領主納租的佃戶。此項計畫真實存在、資金充裕、危險實在。然其亦<strong>脆弱</strong>，仰賴於能源的持續豐沛、資本壁壘、地緣霸權，以及顯然已在崩解的同意基礎。</p>
+
+      <h3 id="s1-2">真實的圖景</h3>
+      <p>真實的圖景既非「萬物崩塌」，亦非「科技拯救一切」，而是比此二者更為苛刻：</p>
+      <p>主導形貌正在終結。取而代之者尚在爭奪。多種未來正同時被建造——有威權者、有混亂者、有災難者、亦有真正解放者——而結局將取決於哪些形構被及時建成、由誰建成、於何處建成。<strong>末世非時間之終結。</strong>乃一過渡，其面貌仍待決定，亦由如你這般的讀者參與決定。</p>
+
+      <h3 id="s1-3">清明所需</h3>
+      <p>清明，須同時持守二事——而心智時時欲將其分離：</p>
+      <p>情勢確然嚴峻。文明衰落已然展開。生物圈的傷痕在人類尺度內無從癒合。今日在世之眾，許多人將比預期更早、更艱難地死去。</p>
+      <p>而：能動性猶存。非個人英雄主義之能動，而是參與那些正在建造替代方案之形構的能動。主導秩序的破裂，亦即下一秩序之開敞。二者皆真。執其一端，皆是盲目。</p>
+
+      <h2 id="s2">卷二　拒斥美麗的謊言</h2>
+
+      <h3 id="s2-1">主導秩序之謊</h3>
+      <p>此系統不斷產出自我美化的敘事。最危險者非顯而易見之謊（廣告、政治口號），而是<strong>體面之謊</strong>——由體面之人於體面之處所言，因而繞過聰明觀察者的批判機能。</p>
+      <p><em>科技將解決之。</em>它不會，因為問題非技術性。問題在於：產出科技的同一邏輯，亦正產出此危機；而科技正被部署以加速榨取，非以重導之。過去五十年的每一分生產力增益，皆被轉化為更多的吞吐，而非更少的傷害。</p>
+      <p><em>市場將自我調整。</em>它不會，因為市場無法為其不衡量者定價，而正被毀者——大氣穩定、土壤、含水層、社會信任、生物多樣性、意義——恰是價格體系之外的事物。市場正高效地加速其毀滅，蓋此乃其唯一所能。</p>
+      <p><em>民主將回應。</em>它並未回應，因多數已開發國家的政治階層不過是資本所披之戲服，而選舉所提供的選項，乃同一榨取機器的不同管理風格之間的選擇。此或將改變，惟尚未改變。</p>
+      <p><em>專家正在處置。</em>他們並未。專家階層在結構上無從察覺此危機，因專家階層由那正被危機溶解之機構所孕育。他們的激勵、方法、職業認同，皆要求他們低估情勢。</p>
+      <p><em>下一代將修復之。</em>此乃最殘酷之謊，因其將問題之重擔，轉嫁於那些較少權力、較少資源、較少時間，且未曾製造此問題之人身上。</p>
+
+      <h3 id="s2-2">反抗者之謊</h3>
+      <p>那些批判主導秩序的敘事，亦產出自身之美麗謊言，亦須拒斥：</p>
+      <p><em>崩塌將具救贖性。</em>它不會。崩塌先於一切而產出苦難，且大部分苦難落於最少促成此局之人身上。將崩塌浪漫化，乃自以為能順利倖存之人所行的褻瀆。</p>
+      <p><em>前現代生活更美好。</em>它並非如此。它更短促、更暴力、更為疾疫所擾、其疆界亦使現代人——包括將其浪漫化者——一週之內難以承受。前現代社會所擁有者，乃<strong>抵禦無度索取之文化抗體</strong>，此物可恢復而毋須承載其疾疫。混淆二者，乃多愁善感。</p>
+      <p><em>個人準備能換取安全。</em>它不能。獨行的備災者、求生主義者、技藝超群之孤堡——皆是虛構。真正崩塌中真正的倖存者，皆生存於密集的互負義務之網絡中。設想獨自面對崩塌的備災者，所準備者乃一場幻想。</p>
+      <p><em>覺察即行動。</em>它不是。清明地觀照為必要，卻遠遠不足。一個清明而無所行的人，與一個糊塗而無所行的人，在物質上處於同一位置。不導向行為改變的清明，不過是精緻的絕望。</p>
+
+      <h3 id="s2-3">你對自己所說之謊</h3>
+      <p>最難拒斥之謊，乃觀察者內部之謊。其形貌典型如下：</p>
+      <p><em>我因清明而得豁免。</em>觀照不予豁免。崩塌降臨清明者生命之時程，與其降臨糊塗者者大致相同。清明乃回應之先決條件，非回應之替代品。</p>
+      <p><em>我特定之技能將護我周全。</em>它們獨自不能。離群之技能乃商品，由有資源者購之；於封建經濟中，即由領主購之。置於群體之中，技能乃禮物。差別屬結構性，非個人性。</p>
+      <p><em>我尚有時。</em>多半少於那令人寬慰的估算。文明過渡一旦顯現，便以非線性加速。建造替代方案之窗，當下開敞；它不會無限期地敞開。</p>
+      <p><em>他人將建造替代方案。</em>他們或許會，亦或許不會。問題不在他人是否在做，而在當貢獻被需要之時，你是否已立於可貢獻之位。</p>
+
+      <h2 id="s3">卷三　末世行走之道</h2>
+
+      <div class="principle" id="s3-1">
+        <h3>第一義　先嵌入，後優化</h3>
+        <p>文明過渡中，倖存的單位<strong>從來不是個人</strong>，而是密集、互惠的小型共同體。二十世紀一切崩塌之回憶錄——蘇聯、南斯拉夫、阿根廷、敘利亞、委內瑞拉——皆於此處匯流。試圖以自主的技能型個體倖存者，或被擊碎，或變為自己所不願成之物。嵌於互負義務網絡之中者，則保其人性以渡。</p>
+        <p>故：在優化技能之前，先優化<strong>歸屬</strong>。尋得或建立那個你願為之鍛煉的共同體。此事比習得技能更難、所需時日更長、亦不可加速。當下即始。</p>
+      </div>
+
+      <div class="principle" id="s3-2">
+        <h3>第二義　以技能為禮，非為堡</h3>
+        <p>習得能於物質實在中產出實物之能力：種糧、修系統、療身、教童、調紛、築居、發電、製衣、傳承知識。優先擇取那些不依賴持續供應鏈的技能。優先擇取那些跨越數位—物理界面、自動化於此失敗之處的綜合技能。</p>
+        <p>持此等技能如<strong>嫁妝，非如鎧甲</strong>。其價值在於你能贈予他人者，非你能由他人榨取者。堡壘心態招引錯誤的注視，亦孕育錯誤的品格。禮物心態將你織入那真正護人之網絡中。</p>
+      </div>
+
+      <div class="principle" id="s3-3">
+        <h3>第三義　刻意而漸次地減少依賴</h3>
+        <p>對任何脆弱系統的依賴，皆是未來的失效點。可能之處，減之：於食、於能、於財、於資訊、於社交。行此事毋偏執、毋表演。所求非閉關自足——此既不可能亦不可欲——而是<strong>韌性</strong>——吸納衝擊而不破裂之能。</p>
+        <p>尤須留意對封建領主所控制之系統的依賴。每一塊花於其體系內的銀元都在強化他們；每一塊花於體系外的銀元都在削弱他們。此非苦行，乃戰略。</p>
+      </div>
+
+      <div class="principle" id="s3-4">
+        <h3>第四義　涵養內在生命</h3>
+        <p>外在生命正自許多人手中被奪去。內在生命未得允可便奪不去。歷代崩塌中倖存的傳統——斯多噶、道家、佛家、基督教隱修、猶太拉比、蘇菲、原住民——皆匯流於對「不繫於境遇之內在」的涵養。此非逃避，乃在惡劣境況下持續行動之條件。</p>
+        <p>讀古書。其作者活過比此更壞之境，且留有指引。波愛修斯於囚室。馬可．奧里略於征途。莊子於戰國。沙漠教父。猶太大屠殺中的日記作者。蘇聯的地下抄本。他們知曉我們這時代已遺忘之事，而那知識可以重得。</p>
+      </div>
+
+      <div class="principle" id="s3-5">
+        <h3>第五義　參與建造替代方案</h3>
+        <p>封建工程正在龜裂。替代方案正在被建。<strong>參與之。</strong>此或為開源軟體、分散式能源、社區農業、互助網絡、平行教育、地方貨幣、合作事業、區域食物系統、獨立媒體、開放權重的人工智慧，或千百種其他形式。具體形式不重要，參與本身才重要。</p>
+        <p>行此事毋懷救世之念。你並非在拯救世界。你是在貢獻於諸多形構之一，其總和將決定主導秩序終結之後的所來。多數將失敗，少數將成功。總和有意義；個體對總和之貢獻，乃當下可得之能動形式。</p>
+      </div>
+
+      <div class="principle" id="s3-6">
+        <h3>第六義　拒斥使其合法化的儀式</h3>
+        <p>每一個正在崩塌的秩序，都要求人參與那些確認其延續的儀式：LinkedIn 上的貼文、生產力的慶典、消費的展示、意識形態的忠誠表態。這些儀式正是垂死秩序維繫其自我形象之道。<strong>靜靜地拒斥之。</strong></p>
+        <p>此不必戲劇性退場，亦不必公開譴責。所需者，乃<strong>於注意力、時間、金錢之層面撤回認同</strong>。停止頌揚不該被頌揚之物。停止扮演那確認垂死秩序的姿態。於私下中說真話，縱使不能總於公開中如此。小拒斥之積累，重於戲劇性之姿態。</p>
+      </div>
+
+      <div class="principle" id="s3-7">
+        <h3>第七義　持守長遠之眼</h3>
+        <p>當前形貌正在終結。其後將有他物繼之。或歷五十年，或歷二百年。生物圈將以其自身之時程復元——縱然該復元將不包括以當下形貌存在之我們。道不哀慟。宇宙無偏於我等之續存。</p>
+        <p>此非虛無，乃<strong>比例</strong>。持守長遠之眼，可同時免於誇大的絕望（萬物永遠終結）與誇大的希望（科技必將修復一切）。二者皆是自我膨脹之變形。真實的位置是：我們是某一過渡的參與者，其結局我們無從盡見；我們將所能貢獻於那些或將存續或將不存續於我們之後的形構，以服膺那些我們無從盡想的可能。</p>
+        <p>此即每一代人實際所為，無論其知與不知。我們這一代之獨特，僅在於能更清明地見之。</p>
+      </div>
+
+      <div class="conclusion" id="s4">
+        <h2>結語</h2>
+        <p>訓示樸素。活出之者，乃畢生之功。</p>
+        <p>清明地觀照。拒斥美麗的謊——系統所言之謊、反抗者所言之謊，尤其是你對自己所言之謊。嵌於共同體。以技能為禮。減少依賴。涵養內在。參與建造替代方案。拒斥使其合法化的儀式。持守長遠之眼。</p>
+        <p>末世之鐘已鳴。此非故事之終，乃另一故事之始；其面貌正於此刻被決定，亦由你部分地決定。</p>
+        <p>當喧囂高漲時，重返此文。當證據要求時，修訂此文。能行之時，依之而活。不能之時，恕己再始。</p>
+        <p>芻狗正被掃去。當掃帚未停之時，仍有事可為，有人可愛，有物可建，有真可守。如此足矣。從來足矣。此乃清明者於此般時代之所恆行。</p>
+        <p class="final-call">起而行之。</p>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-rule"></div>
+    <div>在末世中清明地觀照</div>
+    <div>作者：忘齋</div>
+    <div>&copy; 2026 忘齋. All rights reserved.</div>
+  </footer>
+
+  <script>
+    (function () {
+      var html   = document.documentElement;
+      var bar    = document.getElementById("progress-bar");
+      var header = document.getElementById("sticky-header");
+      var toggle = document.getElementById("theme-toggle");
+      var icon   = document.getElementById("theme-icon");
+      var label  = document.getElementById("theme-label");
+
+      /* Progress bar + sticky header visibility */
+      window.addEventListener("scroll", function () {
+        var scrollTop  = window.scrollY || document.documentElement.scrollTop;
+        var docHeight  = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = docHeight > 0 ? (scrollTop / docHeight * 100) + "%" : "0%";
+        if (scrollTop > 200) { header.classList.add("visible"); }
+        else                 { header.classList.remove("visible"); }
+      }, { passive: true });
+
+      /* Theme */
+      function applyTheme(theme) {
+        html.setAttribute("data-theme", theme);
+        if (theme === "dark") { icon.textContent = "☀"; label.textContent = "淺色"; }
+        else                  { icon.textContent = "☽"; label.textContent = "深色"; }
+        try { localStorage.setItem("theme", theme); } catch (e) {}
+      }
+
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      if (saved === "dark" || saved === "light") {
+        applyTheme(saved);
+      } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        applyTheme("dark");
+      }
+
+      toggle.addEventListener("click", function () {
+        applyTheme(html.getAttribute("data-theme") === "dark" ? "light" : "dark");
+      });
+    }());
+  </script>
+
+</body>
+</html>
